@@ -1,28 +1,33 @@
-﻿//// As of C# 4.0, generic interfaces support covariance for type parameters marked with the out modifier:
-//var bears = new Stack<Bear>();
-//bears.Push(new Bear());
+﻿// As of C# 4.0, generic interfaces support covariance for type parameters marked with the out modifier:
+var bears = new Stack<Bear>();
+bears.Push(new Bear());
 
-//// Bears implements IPoppable<Bear>. We can convert to IPoppable<Animal>:
-//IPoppable<Animal> animals = bears;       // Legal
-//Animal a = animals.Pop();
+// Bears implements IPoppable<Bear>. We can convert to IPoppable<Animal>:
+IPoppable<Animal> animals = bears;       // Legal
+Animal a = animals.Pop();
 
-//public interface IPoppable<out T> { T Pop(); }
+Console.ReadKey();
 
-//class Animal { }
-//class Bear : Animal { }
-//class Camel : Animal { }
+public interface IPoppable<out T> 
+{ 
+    T Pop(); 
+}
 
-//public class Stack<T> : IPoppable<T>
-//{
-//    int position;
-//    T[] data = new T[100];
-//    public void Push(T obj) => data[position++] = obj;
-//    public T Pop() => data[--position];
-//}
+class Animal { }
+class Bear : Animal { }
+class Camel : Animal { }
+
+public class Stack<T> : IPoppable<T>
+{
+    int position;
+    T[] data = new T[100];
+    public void Push(T obj) => data[position++] = obj;
+    public T Pop() => data[--position];
+}
 
 
-//// This is also now legal:
-//class ZooCleaner
-//{
-//    public static void Wash(IPoppable<Animal> animals) { /*...*/ }
-//}
+// This is also now legal:
+class ZooCleaner
+{
+    public static void Wash(IPoppable<Animal> animals) { /*...*/ }
+}
